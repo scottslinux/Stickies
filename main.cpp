@@ -17,10 +17,10 @@ int main()
 {
 
     SetConfigFlags(FLAG_WINDOW_TRANSPARENT);
-    SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+   //SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 
-    InitWindow(1000,2000,"Stickies!");
-    SetWindowPosition(4000,0);
+    InitWindow(1000,2500,"Stickies!");
+    SetWindowPosition(4400,0);
     InitAudioDevice();
     
 

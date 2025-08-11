@@ -6,6 +6,8 @@
 #include <vector>
 #include "raylib.h"
 #include "Button.h"
+#include "Menu.h"
+#include "InputBox.h"
 
 using namespace std;
 
@@ -25,10 +27,14 @@ class Sticky{
         Texture2D stickypic;
         Font marker;
         Button menuonff;
+        Button savenote;
+        Menu Changes;
+        InputBox msgbox;
 
         vector<notedata> StickyList;
         int activenotes=0;
         bool menuflag=false;
+        bool submenuflag=false;
 
     public:
 
