@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <math.h>
 #include "raylib.h"
 #include "Sticky.h"
 
@@ -73,7 +74,7 @@ void Sticky::update()
 
     if (menuonff.update())      //respond to button on
         currstate=states::create;
-    if (!menuonff.update())     //when off return to display state
+    if (!menuonff.update() && currstate!=states::dispose)     //when off return to display state
         currstate=states::displaying;
 
    // cout<<"Current state is: "<<statesetring[static_cast<size_t>(currstate)]<<endl;
@@ -140,6 +141,8 @@ void Sticky::create_draw()
     savenote.draw();
     DrawTextEx(marker,"SAVE",{800,2000},50,0,GREEN);
     msgbox.Draw();
+
+    displaying_draw();
 
     
         
@@ -246,12 +249,34 @@ void Sticky::displaying_draw()
 //==========================================
 void Sticky::dispose_update()
 {
+    fallingtimer+=GetFrameTime();
+    if(fallingtimer>0.02)
+    {
+        //drop at pixels/sec * frame time
+        StickyList[dyingnote].notepos.y+=1000*GetFrameTime();
+        StickyList[dyingnote].notepos.x+=(StickyList[dyingnote].notepos.y/60)*sin(StickyList[dyingnote].notepos.y/200);
+        fallingtimer=0;
+
+        if (StickyList[dyingnote].notepos.y>GetScreenHeight())
+        {
+            //erase the element at beginning + index  for both vectors
+            StickyList.erase(StickyList.begin()+dyingnote);
+            notepics.erase(notepics.begin()+dyingnote);
+
+
+            currstate=states::displaying;
+
+
+
+        }
+    }
 
 }
 //==========================================
 void Sticky::dispose_draw()
 {
-
+    
+    displaying_draw();      //continue to display all notes while conducting animation
 }
 //==========================================
 // the note is finished add the image and info to vectors

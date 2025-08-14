@@ -45,6 +45,7 @@ class Sticky{
         int activenotes=0;
         int dyingnote=0;    //note to dispose of
         double doubleclicktime=0.3;
+        double fallingtimer=0;
         double lastclick=0;
         bool menuflag=false;
         bool submenuflag=false;
