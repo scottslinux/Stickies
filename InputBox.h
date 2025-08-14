@@ -40,6 +40,15 @@ class InputBox{
         double timer=0;
         double timeinterval=1.0;
 
+        vector<Color> notecolorchoices={
+                { 0, 255, 255, 255 },   // cyan
+                { 146,255,74, 255 },   // green
+                { 255, 255, 0, 255 },    // yellow
+                { 255, 170, 255,255}    //pink
+        };
+        Color notecolor={ 255, 255, 0, 200};
+        float colorindex=0;
+
     public:
 
         InputBox(int bxwidth, int bxheight,int fntsz, Vector2 xypos);
@@ -52,6 +61,7 @@ class InputBox{
         bool blinktime();
         string GetString();
         void resetBox();
+        Color getColor();
 
 
 

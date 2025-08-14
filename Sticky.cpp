@@ -12,7 +12,7 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 
 //=========================================
 
-Sticky::Sticky():menuonff({900,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
+Sticky::Sticky():menuonff({1500,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
     savenote({700,2000},0.1)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
@@ -253,15 +253,19 @@ void Sticky::dispose_update()
     if(fallingtimer>0.02)
     {
         //drop at pixels/sec * frame time
-        StickyList[dyingnote].notepos.y+=1000*GetFrameTime();
+        StickyList[dyingnote].notepos.y+=1500*GetFrameTime();
         StickyList[dyingnote].notepos.x+=(StickyList[dyingnote].notepos.y/60)*sin(StickyList[dyingnote].notepos.y/200);
         fallingtimer=0;
+        StickyList[dyingnote].rotation+=sin(StickyList[dyingnote].notepos.y/300);
+
 
         if (StickyList[dyingnote].notepos.y>GetScreenHeight())
         {
             //erase the element at beginning + index  for both vectors
             StickyList.erase(StickyList.begin()+dyingnote);
             notepics.erase(notepics.begin()+dyingnote);
+
+            
 
 
             currstate=states::displaying;
@@ -300,7 +304,7 @@ void Sticky::save2Vectors()
 
     BeginTextureMode(notepics.back());
 
-        DrawTextureEx(stickypic,{0,0},0,0.6,WHITE);
+        DrawTextureEx(stickypic,{0,0},0,0.6,msgbox.getColor());
         DrawTextEx(marker,msgbox.GetString().c_str(),{50,0},70,0,BLACK);
         
 

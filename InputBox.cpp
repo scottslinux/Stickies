@@ -44,6 +44,7 @@ InputBox::~InputBox()
 //======================================================================
 string InputBox::Update()
 {
+
     int key = GetKeyPressed();
 
 while (key > 0) 
@@ -59,7 +60,13 @@ while (key > 0)
 
     }
     
-    
+  if(GetMouseWheelMove())  
+  {
+    colorindex+=0.25;
+    if (colorindex>notecolorchoices.size()-1)
+        colorindex=0;
+    notecolor=notecolorchoices[colorindex];
+  }
 
     return "";
 }
@@ -69,7 +76,7 @@ void InputBox::Draw()
    //Rectangle txtbx={xypos.x,xypos.y,pxlwidth,pxlheight};
 
 
-   DrawTextureEx(sticky,{xypos.x-50,xypos.y},0,.6,WHITE);
+   DrawTextureEx(sticky,{xypos.x-50,xypos.y},0,.6,notecolor);
 
    DrawTextEx(interfnt,txtstr.c_str(),{xypos},fontsize,0,BLACK);
 
@@ -198,4 +205,9 @@ void InputBox::resetBox()
     txtstr="";
 
     return;
+}
+//=============================================================
+Color InputBox::getColor()
+{
+    return notecolor;
 }

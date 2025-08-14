@@ -18,6 +18,7 @@ int main()
 
     SetConfigFlags(FLAG_WINDOW_TRANSPARENT);
     SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
     InitWindow(2000,3000,"Stickies!");
     SetWindowPosition(3500,0);
