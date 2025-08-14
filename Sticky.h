@@ -45,6 +45,7 @@ class Sticky{
         int activenotes=0;
         bool menuflag=false;
         bool submenuflag=false;
+        bool rectflag=false;
 
 
         enum class states{intro,displaying,create,dispose};

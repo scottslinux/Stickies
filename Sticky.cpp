@@ -76,7 +76,7 @@ void Sticky::update()
     if (!menuonff.update())     //when off return to display state
         currstate=states::displaying;
 
-    cout<<"Current state is: "<<statesetring[static_cast<size_t>(currstate)]<<endl;
+   // cout<<"Current state is: "<<statesetring[static_cast<size_t>(currstate)]<<endl;
 
 }
 
@@ -164,17 +164,46 @@ void Sticky::intro_draw()
 void Sticky::displaying_update()
 {
 
+    bool mousebuttondown=(IsMouseButtonDown(MOUSE_BUTTON_LEFT));
+
+    Vector2 mousepos=GetMousePosition();
+
+    for(auto& note:StickyList)
+    {
+        if(CheckCollisionPointRec(mousepos,note.noterect)&&mousebuttondown)
+        {
+            DrawRectangleLinesEx(note.noterect,4,GREEN);
+            note.notepos=GetMousePosition();
+
+        }
+    }
 }
 //==========================================
 void Sticky::displaying_draw()
 {
+    int i=0; //index
    
-    if (notepics.size()!=0) //if not empty draw something
-        DrawTexturePro(notepics[0].texture,{0,0,notepics[0].texture.width,
-            notepics[0].texture.height*-1},{430,0,notepics[0].texture.width,notepics[0].texture.height},
-        {0,0},30,WHITE);
+    if (notepics.size()!=0) //if not empty iterate the vectors and draw notes
+    
+    {
+        for (auto picimg:notepics )
+        {
+            Rectangle source={0,0,picimg.texture.width,picimg.texture.height*-1};
+            Rectangle destin={StickyList[i].notepos.x,StickyList[i].notepos.y,
+                            picimg.texture.width, picimg.texture.height};
+            float rotation=StickyList[i].rotation;
+            Vector2 orig={picimg.texture.width,stickypic.height};
 
+            DrawTexturePro(picimg.texture,source,destin,{0,0},rotation,WHITE);
+            
+        
+
+            i++;  //forgot to increment the index--->idiot!
+        }
+    
+    }
 }
+
 //==========================================
 void Sticky::dispose_update()
 {
@@ -192,6 +221,19 @@ void Sticky::save2Vectors()
     // create a new entry in the pics vector
     notepics.push_back(LoadRenderTexture(500,500)); 
 
+    //create entry in the note ledger
+    notedata newentry;
+        newentry.completed=true;
+        newentry.notepos={rand()%600,rand()%1200};  //PICK RANDOM SPOT ON SCREEN
+        newentry.noterect={newentry.notepos.x,newentry.notepos.y,500*.6,500*.6};
+        newentry.rotation=static_cast<float>(rand()%25);
+        newentry.task=msgbox.GetString();
+
+    cout<<"Rotation: "<<newentry.rotation<<endl;
+
+    StickyList.emplace_back(newentry);
+
+
     BeginTextureMode(notepics.back());
 
         DrawTextureEx(stickypic,{0,0},0,0.6,WHITE);
@@ -199,6 +241,14 @@ void Sticky::save2Vectors()
         
 
     EndTextureMode();
+
+    
+
+    cout<<"number of elements in notepics: "<<notepics.size()<<endl;
+    cout<<"number of elements in Stickylist: "<<StickyList.size()<<endl;
+
+    
+    
 
 
 
