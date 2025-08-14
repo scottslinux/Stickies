@@ -296,6 +296,7 @@ void Sticky::save2Vectors()
         newentry.noterect={newentry.notepos.x,newentry.notepos.y,500*.6,500*.6};
         newentry.rotation=static_cast<float>(rand()%25);
         newentry.task=msgbox.GetString();
+        newentry.notetint=msgbox.getColor();
 
     cout<<"Rotation: "<<newentry.rotation<<endl;
 

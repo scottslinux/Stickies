@@ -44,9 +44,10 @@ class InputBox{
                 { 0, 255, 255, 255 },   // cyan
                 { 146,255,74, 255 },   // green
                 { 255, 255, 0, 255 },    // yellow
-                { 255, 170, 255,255}    //pink
+                { 255, 170, 255,255},    //pink
+                { 37, 157, 249,255}    //blue
         };
-        Color notecolor={ 255, 255, 0, 200};
+        Color notecolor={ 0,255,255,255};
         float colorindex=0;
 
     public:

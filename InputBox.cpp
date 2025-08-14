@@ -62,8 +62,8 @@ while (key > 0)
     
   if(GetMouseWheelMove())  
   {
-    colorindex+=0.25;
-    if (colorindex>notecolorchoices.size()-1)
+    colorindex+=0.1;
+    if (colorindex>notecolorchoices.size())
         colorindex=0;
     notecolor=notecolorchoices[colorindex];
   }

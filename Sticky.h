@@ -19,6 +19,7 @@ struct notedata{
     Rectangle noterect{0,0,0,0};
     Vector2 notepos;
     float rotation;
+    Color notetint;
 
 };
 //=============================================
