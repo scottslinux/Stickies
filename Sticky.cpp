@@ -163,19 +163,58 @@ void Sticky::intro_draw()
 //==========================================
 void Sticky::displaying_update()
 {
-
+    //checking for movement and rotation
+    int index=0;
     bool mousebuttondown=(IsMouseButtonDown(MOUSE_BUTTON_LEFT));
 
     Vector2 mousepos=GetMousePosition();
 
+    
+                
     for(auto& note:StickyList)
     {
+        //  Mouse Dragging the Note into position
         if(CheckCollisionPointRec(mousepos,note.noterect)&&mousebuttondown)
         {
             DrawRectangleLinesEx(note.noterect,4,GREEN);
-            note.notepos=GetMousePosition();
+            note.notepos={GetMousePosition().x-150,GetMousePosition().y-150};
+            note.noterect={note.notepos.x,note.notepos.y,notepics[index].texture.width*0.6,
+                        notepics[index].texture.height*0.6};
 
+            DrawRectanglePro({0,0,GetScreenWidth(),GetScreenHeight()},{0,0},0,Color{0,150,150,100});
         }
+
+
+        // Mouse Wheel Rotation of the note
+        if(CheckCollisionPointRec(mousepos,note.noterect)&&GetMouseWheelMove())
+        {
+            note.rotation+=GetMouseWheelMove()*2;
+        }
+
+        
+        //check for double click-->destroy
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&&CheckCollisionPointRec(mousepos,note.noterect)) 
+        {
+            double now=GetTime();
+            if(now-lastclick<= doubleclicktime)
+            {
+                cout<<"DOUBLE CLICK on note "<<index<<endl;
+                dyingnote=index;    //index of note to dispose of
+                currstate=states::dispose;
+            }
+                else   
+                {
+                    lastclick=now;
+                    
+                }
+        }
+
+
+
+
+
+
+        index++;
     }
 }
 //==========================================
@@ -242,7 +281,7 @@ void Sticky::save2Vectors()
 
     EndTextureMode();
 
-    
+    msgbox.resetBox();  //reset for the next note
 
     cout<<"number of elements in notepics: "<<notepics.size()<<endl;
     cout<<"number of elements in Stickylist: "<<StickyList.size()<<endl;

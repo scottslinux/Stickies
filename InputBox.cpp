@@ -192,3 +192,10 @@ string InputBox::GetString()
 
 
 }
+//=============================================================
+void InputBox::resetBox()
+{
+    txtstr="";
+
+    return;
+}

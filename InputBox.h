@@ -51,6 +51,7 @@ class InputBox{
         void drawcursor();
         bool blinktime();
         string GetString();
+        void resetBox();
 
 
 

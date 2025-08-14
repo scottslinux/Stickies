@@ -43,9 +43,13 @@ class Sticky{
         vector<RenderTexture2D> notepics;
 
         int activenotes=0;
+        int dyingnote=0;    //note to dispose of
+        double doubleclicktime=0.3;
+        double lastclick=0;
         bool menuflag=false;
         bool submenuflag=false;
         bool rectflag=false;
+
 
 
         enum class states{intro,displaying,create,dispose};
