@@ -12,14 +12,23 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 //=========================================
 
 Sticky::Sticky():menuonff({900,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
-    savenote({550,1800},0.1)
+    savenote({700,2000},0.1)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
-    stickRnder=LoadRenderTexture(500,500);  //initialize the rendertexture
+    titles=LoadFontEx("./resources/Inter.ttf",80,0,0);
+
+    stickRnder=LoadRenderTexture(500,500);  //initialize  the rendertexture
 
 
+    currstate=states::displaying;   // set the initial state- eventually will be intro
 
+    //notepics.push_back(LoadRenderTexture(500,500));  //create a sample rndrtex in vector
+    //same width and height as stickRnder
+    
+
+    
+    
 
 
 
@@ -31,6 +40,7 @@ Sticky::Sticky():menuonff({900,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
 Sticky::~Sticky()
 {
     UnloadFont(marker);
+    UnloadFont(titles);
     UnloadTexture(stickypic);
     UnloadRenderTexture(stickRnder);
 
@@ -46,67 +56,27 @@ Sticky::~Sticky()
 //=========================================
 void Sticky::update()
 {
-    
-    
-    
-    if (menuonff.update()&&!menuflag)
+    //      ⁡⁣⁢⁣​‌‍‌SWITCHBOARD​⁡
+    switch (currstate)
     {
-        menuflag=true;
-        
+            case states::intro :intro_update();
+                                break;
+            case states::create :create_update();
+                                break;
+            case states::displaying :displaying_update();
+                                break;
+            case states::dispose :dispose_update();
+                                break;
+            default:
+                break;
     }
 
-    
-        if (menuflag && !submenuflag)
-            {   
-                
-                DrawText("Menu On",700,800,50,WHITE);
-                if(menuonff.update())
-                    menuflag=false;
-                vector<string> choices={"Add New Note","Edit Existing Note","Exit Notes"};
-                
-                
-                int choice=Changes.displayMenu(choices,{400,2000},60);
-                        
+    if (menuonff.update())      //respond to button on
+        currstate=states::create;
+    if (!menuonff.update())     //when off return to display state
+        currstate=states::displaying;
 
-                switch (choice)
-                {
-                case 1:
-                    submenuflag=true;  //allows opening note editor
-                    menuflag=false;
-                    cout<<"choice 1....\n";
-                    cout<<"menuflag: "<<menuflag<<endl;
-                    break;
-                case 2:
-                    cout<<"choice 2....\n";
-                
-                default:
-                    break;
-                }
-
-                
-            }
-
-        
-            if(submenuflag)
-                {   
-                    msgbox.Update();
-                    msgbox.Draw();
-                    bool save=savenote.update();
-                    savenote.draw();
-                    DrawTextEx(marker,"Save Note",{620,1800},60,0,WHITE);
-
-                    if (save)  
-                        {
-                            submenuflag=false;
-                            menuflag=false;
-                            menuonff.value=false;   //reset both buttons
-                            savenote.value=false;
-                            cout<<"time to create the actual note.....!!!!\nbut first its bedtime....";
-                            //call the routine to capture the note into a rendertexture and 
-                            //commit to the vector
-                        }
-                }
-
+    cout<<"Current state is: "<<statesetring[static_cast<size_t>(currstate)]<<endl;
 
 }
 
@@ -114,45 +84,125 @@ void Sticky::update()
 
 
 //=========================================
-void Sticky::display()
+void Sticky::draw()
 {
-    
+    switch (currstate)
+    {
+            case states::intro :intro_draw();
+                                break;
+            case states::create :create_draw();
+                                break;
+            case states::displaying :displaying_draw();
+                                break;
+            case states::dispose :dispose_draw();
+                                break;
+            default:
+                break;
+    }
+
+
     float scale=0.6;    //Image scale factor
 
-    BeginTextureMode(stickRnder);
-        //draw to the rendertexture
-        DrawTextureEx(stickypic,{0,0},0,scale,WHITE);
-        DrawTextEx(marker,"DEA License\nRenew Sept.",{35,100},60,0,BLACK);
-
-    EndTextureMode();
-
-    Vector2 origin={stickRnder.texture.width*scale/2,stickRnder.texture.height*scale/2};
-    Rectangle source={0,0,stickRnder.texture.width,-1*stickRnder.texture.height};
-    Rectangle dest={200,200,stickRnder.texture.width,stickRnder.texture.height};
-    
-    //cout<<"Origin = "<<origin.x<<", "<<origin.y<<endl;
-
-    DrawTexturePro(stickRnder.texture,source,dest,{100,100},15,Color{255,255,255,255});
 
     menuonff.draw();
-
-    if (menuflag)
-        {
-            
-            
-        }
+    
 
     return;
 }
+
 //==========================================
 
-void Sticky::createNote()
+void Sticky::create_update()
 {
-    string newNotetext;
-    cin>>newNotetext;
+    
+    msgbox.Update();    //update the text box over the note
+    if(savenote.update())  //update the save note button 
+        {   //save note button pressed
+            menuonff.value=false;   //set both buttons to off
+            savenote.value=false;
+            save2Vectors();         //save the image to the vector
 
-    cout<<newNotetext<<endl;
+            currstate=states::displaying; //change state
 
+            
+
+        }
+    
+   
 
     
+}
+//==========================================
+
+void Sticky::create_draw()
+{
+    DrawTextEx(titles,"Create Your New Sticky Note",{0,2200},80,0,GREEN);
+    savenote.draw();
+    DrawTextEx(marker,"SAVE",{800,2000},50,0,GREEN);
+    msgbox.Draw();
+
+    
+        
+
+    
+}
+
+//==========================================
+
+void Sticky::intro_update()
+{
+
+
+}
+//==========================================
+void Sticky::intro_draw()
+{
+
+
+}
+//==========================================
+void Sticky::displaying_update()
+{
+
+}
+//==========================================
+void Sticky::displaying_draw()
+{
+   
+    if (notepics.size()!=0) //if not empty draw something
+        DrawTexturePro(notepics[0].texture,{0,0,notepics[0].texture.width,
+            notepics[0].texture.height*-1},{430,0,notepics[0].texture.width,notepics[0].texture.height},
+        {0,0},30,WHITE);
+
+}
+//==========================================
+void Sticky::dispose_update()
+{
+
+}
+//==========================================
+void Sticky::dispose_draw()
+{
+
+}
+//==========================================
+// the note is finished add the image and info to vectors
+void Sticky::save2Vectors()
+{
+    // create a new entry in the pics vector
+    notepics.push_back(LoadRenderTexture(500,500)); 
+
+    BeginTextureMode(notepics.back());
+
+        DrawTextureEx(stickypic,{0,0},0,0.6,WHITE);
+        DrawTextEx(marker,msgbox.GetString().c_str(),{50,0},70,0,BLACK);
+        
+
+    EndTextureMode();
+
+
+
+
+
+
 }

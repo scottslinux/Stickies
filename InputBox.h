@@ -17,7 +17,7 @@ class InputBox{
 
         Font interfnt;
         Texture2D sticky;
-        
+
         string txtstr="";
 
         int words=0;
@@ -50,6 +50,7 @@ class InputBox{
         char KeyCodeToChar(int key);  //from my friend
         void drawcursor();
         bool blinktime();
+        string GetString();
 
 
 

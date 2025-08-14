@@ -185,3 +185,10 @@ bool InputBox::blinktime()
     else return false;
 
 }
+//=============================================================
+string InputBox::GetString()
+{
+    return txtstr;
+
+
+}

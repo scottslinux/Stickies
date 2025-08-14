@@ -16,25 +16,42 @@ using namespace std;
 struct notedata{
     string task;
     bool completed;
-
     Rectangle noterect{0,0,0,0};
+    Vector2 notepos;
+    float rotation;
 
 };
+//=============================================
+//  ⁡⁣⁢⁣​‌‌
+
+
+
+//=============================================
 
 class Sticky{
     protected:
         static RenderTexture2D stickRnder;
         Texture2D stickypic;
         Font marker;
+        Font titles;
         Button menuonff;
         Button savenote;
         Menu Changes;
         InputBox msgbox;
 
         vector<notedata> StickyList;
+        vector<RenderTexture2D> notepics;
+
         int activenotes=0;
         bool menuflag=false;
         bool submenuflag=false;
+
+
+        enum class states{intro,displaying,create,dispose};
+        states currstate;
+
+        vector<string> statesetring={"intro","displaying","create","dispose"};
+
 
     public:
 
@@ -42,10 +59,22 @@ class Sticky{
         Sticky();
         ~Sticky();
 
-        void createNote();
-        void display();
+        void intro_draw();
+        void intro_update();
+
+        void create_draw();
+        void create_update();
+
+        void displaying_update();
+        void displaying_draw();
+
+        void dispose_update();
+        void dispose_draw();
+
+        void draw();
         void update();
-        void destroyoldnote();
+
+        void save2Vectors();
 
 
 
