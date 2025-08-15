@@ -3,6 +3,10 @@
 #include <string>
 #include <vector>
 #include <math.h>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+
 #include "raylib.h"
 #include "Sticky.h"
 
@@ -24,10 +28,16 @@ Sticky::Sticky():menuonff({1500,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
 
     currstate=states::displaying;   // set the initial state- eventually will be intro
 
-    //notepics.push_back(LoadRenderTexture(500,500));  //create a sample rndrtex in vector
-    //same width and height as stickRnder
+    //check and see if notes already exist....
     
+    if (filesystem::exists("./resources/StickyConfig.txt"))
+    {
+        cout<<"There are existing notes....loading them\n";
 
+        LoadStickiesfromFile();
+
+
+    }
     
     
 
@@ -122,6 +132,10 @@ void Sticky::create_update()
             menuonff.value=false;   //set both buttons to off
             savenote.value=false;
             save2Vectors();         //save the image to the vector
+
+            //save the Stickylist vector to disk
+
+            FiletoDisk();
 
             currstate=states::displaying; //change state
 
@@ -317,11 +331,94 @@ void Sticky::save2Vectors()
     cout<<"number of elements in Stickylist: "<<StickyList.size()<<endl;
 
     
+
+
+}
+//========================================================================
+void Sticky::FiletoDisk()
+{
+    string path="./resources/StickyConfig.txt";
+
+    ofstream outfile(path);   //open or create the file (overwrite)
+        if(outfile.is_open())
+            cout<<"file opened successfully for write operation.\n";
+            else
+                cout<<"FAILED TO OPEN FILE FOR WRITE!!!\n";
+
+    // Again...a little help from my friend
+    for(const auto& stick:StickyList)
+    {
+        outfile
+            << stick.completed << ' '
+            << stick.notepos.x << ' ' << stick.notepos.y << ' '
+            << stick.noterect.x << ' ' << stick.noterect.y << ' '
+            << stick.noterect.width << ' ' << stick.noterect.height << ' '
+            << int(stick.notetint.r) << ' ' << int(stick.notetint.g) << ' '
+            << int(stick.notetint.b) << ' ' << int(stick.notetint.a) << ' '
+            << stick.rotation << ' '
+            << std::quoted(stick.task)   // preserves spaces/quotes in the task
+            << '\n';
+
+
+    }
+
+    outfile.close();
+
+    return;
+
     
 
 
 
 
+}
+//========================================================================
+void Sticky::LoadStickiesfromFile()
+{
+    const std::string path = "./resources/StickyConfig.txt";
+    std::ifstream infile(path);
+    if (!infile) { std::cerr << "FAILED TO OPEN FILE FOR READ!!!\n"; return; }
 
+    StickyList.clear();
+    notedata stick;
+    int r,g,b,a;
+
+    while (infile
+        >> stick.completed
+        >> stick.notepos.x >> stick.notepos.y
+        >> stick.noterect.x >> stick.noterect.y
+        >> stick.noterect.width >> stick.noterect.height
+        >> r >> g >> b >> a
+        >> stick.rotation
+        >> std::quoted(stick.task))
+    {
+        stick.notetint = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)a };
+        StickyList.push_back(stick);
+    }
+
+
+    //create the images from the retrieved data
+
+    notepics.clear();       //clear out the notepics vector
+
+    int i=0;
+
+    for(const auto& s:StickyList)
+    {
+        notepics.push_back(LoadRenderTexture(500,500));
+
+        BeginTextureMode(notepics.back());
+
+            
+            DrawTextureEx(stickypic,{0,0},0,0.6,s.notetint);
+            DrawTextEx(marker,s.task.c_str(),{50,0},70,0,BLACK);
+
+
+        EndTextureMode();
+
+        i++;
+
+
+    }
 
 }

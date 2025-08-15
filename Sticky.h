@@ -82,6 +82,8 @@ class Sticky{
         void update();
 
         void save2Vectors();
+        void FiletoDisk();
+        void LoadStickiesfromFile();
 
 
 
