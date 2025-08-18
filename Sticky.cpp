@@ -9,6 +9,7 @@
 
 #include "raylib.h"
 #include "Sticky.h"
+#include "GlobalScale.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 //=========================================
 
 Sticky::Sticky():menuonff({1500,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
-    savenote({700,2000},0.1)
+    savenote({700,2000},0.1),scaler({200,400},0.5,5,5,10)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
@@ -67,6 +68,9 @@ Sticky::~Sticky()
 //=========================================
 void Sticky::update()
 {
+    scaler.update();
+
+
     //      ⁡⁣⁢⁣​‌‍‌SWITCHBOARD​⁡
     switch (currstate)
     {
@@ -97,6 +101,8 @@ void Sticky::update()
 //=========================================
 void Sticky::draw()
 {
+    scaler.draw();
+
     switch (currstate)
     {
             case states::intro :intro_draw();
@@ -114,7 +120,7 @@ void Sticky::draw()
 
     float scale=0.6;    //Image scale factor
 
-
+    
     menuonff.draw();
     
 
@@ -245,8 +251,13 @@ void Sticky::displaying_draw()
         for (auto picimg:notepics )
         {
             Rectangle source={0,0,picimg.texture.width,picimg.texture.height*-1};
+
+            //Adjust note size with Globalscale adjusting dest rect
             Rectangle destin={StickyList[i].notepos.x,StickyList[i].notepos.y,
-                            picimg.texture.width, picimg.texture.height};
+                            picimg.texture.width*Globalscale, picimg.texture.height*Globalscale};
+
+
+
             float rotation=StickyList[i].rotation;
             Vector2 orig={picimg.texture.width,stickypic.height};
 

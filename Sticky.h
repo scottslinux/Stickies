@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "Menu.h"
 #include "InputBox.h"
+#include "Slider.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ class Sticky{
         Button savenote;
         Menu Changes;
         InputBox msgbox;
+        Slider scaler;
 
         vector<notedata> StickyList;
         vector<RenderTexture2D> notepics;

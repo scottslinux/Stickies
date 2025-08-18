@@ -5,6 +5,8 @@
 #include <raylib.h>
 
 #include "InputBox.h"
+#include "GlobalScale.h"
+
 
 //======================================================================
 InputBox::InputBox(int bxwidth, int bxheight,int fntsz, Vector2 xy):boxwidth(bxwidth),boxheight(bxheight),fontsize(fntsz),

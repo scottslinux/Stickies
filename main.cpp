@@ -5,6 +5,8 @@
 #include "raylib.h"
 
 #include "Sticky.h"
+#include "GlobalScale.h"
+
 
 
 using namespace std;

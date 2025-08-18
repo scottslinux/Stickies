@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <vector>
 #include <string>
+#include "GlobalScale.h"
 
 Font Menu::digital7{0};
 Font Menu::Bold{0};

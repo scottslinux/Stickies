@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <raylib.h>
+#include "GlobalScale.h"
+
 
 Texture2D Button::button_off{0};
 Texture2D Button::button_on{0};
@@ -97,7 +99,8 @@ void Button::draw()
 {
     Texture2D& activetexture=(!value ? button_off:button_on);
     
-    DrawTextureEx(activetexture,{location.x,location.y},0,buttonscale,WHITE);
+    DrawTextureEx(activetexture,{location.x,location.y},0,0.2*Globalscale*.7,WHITE);
+    cout<<"GS in Button..."<<Globalscale<<endl;
     
    
 Vector2 center;
@@ -105,10 +108,7 @@ Vector2 center;
     center.y=button_off.height/2+location.y;
 
 
-    //DrawRectangleLines(location.x,location.y,
-     //       buttonscale*button_off.width,buttonscale*button_off.height,BLUE);
-
-
+    
     return;
 }
 //-----------------------------------------------
