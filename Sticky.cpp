@@ -17,8 +17,8 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 
 //=========================================
 
-Sticky::Sticky():menuonff({GetScreenWidth()*0.8,GetScreenHeight()*0.05},0.1),Changes(),msgbox(15,8,70,{GetScreenWidth()*0.7,GetScreenHeight()*0.65}),
-    savenote({GetScreenWidth()*0.7,GetScreenHeight()*0.8},0.1),scaler({GetScreenWidth()*0.68,GetScreenHeight()*0.82},0.4,5,5,15)
+Sticky::Sticky():menuonff({GetScreenWidth()*0.8,GetScreenHeight()*0.05},0.1),Changes(),msgbox(15,8,70,{GetScreenWidth()*0.7,GetScreenHeight()*0.55}),
+    savenote({GetScreenWidth()*0.7,GetScreenHeight()*0.8},0.1),scaler({GetScreenWidth()*0.68,GetScreenHeight()*0.70},0.4,5,5,15)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
