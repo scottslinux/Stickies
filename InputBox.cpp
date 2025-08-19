@@ -32,6 +32,8 @@ InputBox::InputBox(int bxwidth, int bxheight,int fntsz, Vector2 xy):boxwidth(bxw
 
     cursorxy={0,0};
 
+    
+
 
 
 
@@ -64,7 +66,7 @@ while (key > 0)
     
   if(GetMouseWheelMove())  
   {
-    colorindex+=0.1;
+    colorindex+=0.2;
     if (colorindex>notecolorchoices.size())
         colorindex=0;
     notecolor=notecolorchoices[colorindex];

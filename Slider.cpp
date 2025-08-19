@@ -40,6 +40,7 @@ Slider::Slider(Vector2 loc, float sliderscale,int detnts,int minim,int maxi)
     min=minim;
     max=maxi;
     detents=detnts;
+    value=max/2;    //start the slider in the middle
 
     x1=location.x+73*scale; //this is the start of the slider @100%-->73 pixes from left
     x2=location.x+840*scale; //the slide ends at 840 pixels @ 100% --scaling down

@@ -151,7 +151,7 @@ void Button::unloadResources()
 bool Button::clicktimer()
 {
 
-    if(timer<0.4)
+    if(timer<0.8)
     {
             timer+=GetFrameTime();
 

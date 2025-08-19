@@ -18,7 +18,7 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 //=========================================
 
 Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1800}),
-    savenote({700,2000},0.1),scaler({200,400},0.5,5,5,10)
+    savenote({700,2000},0.1),scaler({200,400},0.5,5,5,15)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
@@ -40,7 +40,7 @@ Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1800}),
 
     }
     
-    
+    Globalscale=7* 0.1; //reasonable initial value for the global scale
 
 
 
@@ -198,17 +198,7 @@ void Sticky::displaying_update()
                 
     for(auto& note:StickyList)
     {
-        //  Mouse Dragging the Note into position
-        if(CheckCollisionPointRec(mousepos,note.noterect)&&mousebuttondown)
-        {
-            DrawRectangleLinesEx(note.noterect,4,GREEN);
-            note.notepos={GetMousePosition().x-150,GetMousePosition().y-150};
-            note.noterect={note.notepos.x,note.notepos.y,notepics[index].texture.width*0.6,
-                        notepics[index].texture.height*0.6};
-
-            DrawRectanglePro({0,0,GetScreenWidth(),GetScreenHeight()},{0,0},0,Color{0,150,150,100});
-        }
-
+        
 
         // Mouse Wheel Rotation of the note
         if(CheckCollisionPointRec(mousepos,note.noterect)&&GetMouseWheelMove())
@@ -233,6 +223,19 @@ void Sticky::displaying_update()
                     
                 }
         }
+        //  Mouse Dragging the Note into position
+        if(CheckCollisionPointRec(mousepos,note.noterect)&&mousebuttondown)
+        {
+            DrawRectangleLinesEx(note.noterect,4,GREEN);
+            note.notepos={GetMousePosition().x-150,GetMousePosition().y-150};
+            note.noterect={note.notepos.x,note.notepos.y,notepics[index].texture.width*0.6,
+                        notepics[index].texture.height*0.6};
+
+            DrawRectanglePro({0,0,GetScreenWidth(),GetScreenHeight()},{0,0},0,Color{0,150,150,100});
+
+            break;
+        }
+
 
 
 
