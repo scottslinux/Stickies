@@ -17,7 +17,7 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 
 //=========================================
 
-Sticky::Sticky():menuonff({1500,10},0.1),Changes(),msgbox(15,8,70,{200,1800}),
+Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1800}),
     savenote({700,2000},0.1),scaler({200,400},0.5,5,5,10)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
@@ -68,8 +68,7 @@ Sticky::~Sticky()
 //=========================================
 void Sticky::update()
 {
-    scaler.update();
-
+    menuonff.update();
 
     //      ⁡⁣⁢⁣​‌‍‌SWITCHBOARD​⁡
     switch (currstate)
@@ -101,7 +100,7 @@ void Sticky::update()
 //=========================================
 void Sticky::draw()
 {
-    scaler.draw();
+    
 
     switch (currstate)
     {
@@ -131,7 +130,9 @@ void Sticky::draw()
 
 void Sticky::create_update()
 {
-    
+    scaler.update();    //expose scaling slider
+
+
     msgbox.Update();    //update the text box over the note
     if(savenote.update())  //update the save note button 
         {   //save note button pressed
@@ -162,6 +163,7 @@ void Sticky::create_draw()
     DrawTextEx(marker,"SAVE",{800,2000},50,0,GREEN);
     msgbox.Draw();
 
+    scaler.draw();
     displaying_draw();
 
     

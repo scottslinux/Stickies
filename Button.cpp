@@ -38,9 +38,6 @@ Button::Button(Vector2 loc, float scale)
 
 
 
-    std::cout<<"in the constructor...\n";
-    std::cout<<"location: "<<location.x<<","<<location.y<<std::endl;
-
     return;
 }
 //----------------------------------------------
@@ -60,12 +57,15 @@ Button::~Button()
 //-----------------------------------------------
 bool Button::update()
 {
+
+    buttonscale=Globalscale*0.14;
     //find the center of the scaled button for clicking purposes
     Vector2 center;
-    center.x=(buttonscale*button_off.width)/2+location.x;
-    center.y=(buttonscale*button_off.width)/2+location.y;
+    center.x=location.x;   //-(button_off.width*buttonscale/2);
+    center.y=location.y;   //-(button_off.height*buttonscale/2);
 
-    //cout<<"x: "<<center.x<<" y: "<<center.y<<endl;
+    //DrawCircle(center.x,center.y,100,RED);
+
 
 
     //button converted to toggle
@@ -79,7 +79,6 @@ bool Button::update()
 
                 }
                     
-    //cout<<"value: "<<value<<endl;
 
     if (CheckCollisionPointCircle(GetMousePosition(),center,100)
             && IsMouseButtonDown(MOUSE_BUTTON_LEFT)&& IsKeyDown(KEY_LEFT_SHIFT))
@@ -97,16 +96,18 @@ bool Button::update()
 //-----------------------------------------------
 void Button::draw()
 {
+    buttonscale=Globalscale*0.14;    //differential size button vs stickies
+
+    Vector2 center;
+    center.x=location.x-(button_off.width*buttonscale/2);
+    center.y=location.y-(button_off.height*buttonscale/2);
+
+
     Texture2D& activetexture=(!value ? button_off:button_on);
     
-    DrawTextureEx(activetexture,{location.x,location.y},0,0.2*Globalscale*.7,WHITE);
-    cout<<"GS in Button..."<<Globalscale<<endl;
+    DrawTextureEx(activetexture,center,0,buttonscale,WHITE);
     
    
-Vector2 center;
-    center.x=button_off.width/2+location.x;
-    center.y=button_off.height/2+location.y;
-
 
     
     return;
