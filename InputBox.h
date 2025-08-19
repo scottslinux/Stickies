@@ -36,6 +36,7 @@ class InputBox{
 
         float dtime=0.0;
         float cursorinterval=0.25;  //.25 ms cursor blink interval
+        bool colorflag=false;
 
         double timer=0;
         double timeinterval=1.0;

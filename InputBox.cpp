@@ -48,6 +48,12 @@ InputBox::~InputBox()
 //======================================================================
 string InputBox::Update()
 {
+    if(!colorflag)
+    {
+        srand(6);
+        colorflag=true;
+        colorindex=rand()%4;    //start with a random sticky color
+    }
 
     int key = GetKeyPressed();
 

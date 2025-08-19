@@ -17,8 +17,8 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 
 //=========================================
 
-Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1800}),
-    savenote({700,2000},0.1),scaler({200,400},0.5,5,5,15)
+Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1600}),
+    savenote({700,2000},0.1),scaler({700,1600},0.5,5,5,15)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
@@ -51,6 +51,9 @@ Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1800}),
 //=========================================
 Sticky::~Sticky()
 {
+    //before shutting down write to disk
+    FiletoDisk();
+
     UnloadFont(marker);
     UnloadFont(titles);
     UnloadTexture(stickypic);
@@ -165,6 +168,8 @@ void Sticky::create_draw()
 
     scaler.draw();
     displaying_draw();
+
+    DrawRectangleLinesEx({160,1500,1400,500},5,WHITE);
 
     
         
