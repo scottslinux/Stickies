@@ -17,8 +17,8 @@ RenderTexture2D Sticky::stickRnder{};  //completing the definition of static ren
 
 //=========================================
 
-Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1600}),
-    savenote({700,2000},0.1),scaler({700,1600},0.5,5,5,15)
+Sticky::Sticky():menuonff({GetScreenWidth()*0.8,GetScreenHeight()*0.05},0.1),Changes(),msgbox(15,8,70,{GetScreenWidth()*0.7,GetScreenHeight()*0.65}),
+    savenote({GetScreenWidth()*0.7,GetScreenHeight()*0.78},0.1),scaler({GetScreenWidth()*0.68,GetScreenHeight()*0.82},0.4,5,5,15)
 {
     stickypic=LoadTexture("./resources/stickypic.png");
     marker=LoadFontEx("./resources/marker.ttf",100,0,0);
@@ -40,7 +40,10 @@ Sticky::Sticky():menuonff({1200,100},0.1),Changes(),msgbox(15,8,70,{200,1600}),
 
     }
     
-    Globalscale=7* 0.1; //reasonable initial value for the global scale
+    //Globalscale=7* 0.1; //reasonable initial value for the global scale
+
+    if (Globalscale==1.0)
+        Globalscale=7*0.1;  
 
 
 
@@ -161,15 +164,16 @@ void Sticky::create_update()
 
 void Sticky::create_draw()
 {
-    DrawTextEx(titles,"Create Your New Sticky Note",{0,2200},80,0,GREEN);
+    DrawTextEx(titles,"    Create\n  Your New\n Sticky Note",{GetScreenWidth()*.70,GetScreenHeight()*0.90},75,0,GREEN);
     savenote.draw();
-    DrawTextEx(marker,"SAVE",{800,2000},50,0,GREEN);
+    DrawTextEx(marker,"SAVE",{GetScreenWidth()*0.72,GetScreenHeight()*0.83},50,0,WHITE);
     msgbox.Draw();
 
     scaler.draw();
     displaying_draw();
 
-    DrawRectangleLinesEx({160,1500,1400,500},5,WHITE);
+    Rectangle border={GetScreenWidth()*.65,GetScreenHeight()*0.62,GetScreenWidth()*0.25,GetScreenHeight()*0.28};
+    DrawRectangleLinesEx(border,10,YELLOW);
 
     
         
@@ -366,6 +370,8 @@ void Sticky::FiletoDisk()
             else
                 cout<<"FAILED TO OPEN FILE FOR WRITE!!!\n";
 
+    outfile<<Globalscale<<"\n";     //first item in the dump is the global scale...will load first
+
     // Again...a little help from my friend
     for(const auto& stick:StickyList)
     {
@@ -403,6 +409,8 @@ void Sticky::LoadStickiesfromFile()
     StickyList.clear();
     notedata stick;
     int r,g,b,a;
+
+    infile>>Globalscale;
 
     while (infile
         >> stick.completed

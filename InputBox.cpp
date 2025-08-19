@@ -32,6 +32,10 @@ InputBox::InputBox(int bxwidth, int bxheight,int fntsz, Vector2 xy):boxwidth(bxw
 
     cursorxy={0,0};
 
+    colorindex=2;
+
+    
+
     
 
 
@@ -48,12 +52,7 @@ InputBox::~InputBox()
 //======================================================================
 string InputBox::Update()
 {
-    if(!colorflag)
-    {
-        srand(6);
-        colorflag=true;
-        colorindex=rand()%4;    //start with a random sticky color
-    }
+    cout<<"color index: "<<colorindex<<endl;
 
     int key = GetKeyPressed();
 
@@ -77,6 +76,7 @@ while (key > 0)
         colorindex=0;
     notecolor=notecolorchoices[colorindex];
   }
+    else notecolor=notecolorchoices[colorindex];
 
     return "";
 }

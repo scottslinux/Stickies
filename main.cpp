@@ -22,10 +22,18 @@ int main()
     SetConfigFlags(FLAG_WINDOW_UNDECORATED);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
-    InitWindow(2000,3000,"Stickies!");
+    
+    InitWindow(2000,2500,"Stickies!");
     SetWindowPosition(3500,0);
     InitAudioDevice();
-     
+
+    int mon = GetCurrentMonitor();
+    int mw  = GetMonitorWidth(mon);    // raw pixel width of that monitor
+    int mh  = GetMonitorHeight(mon);   // raw pixel height of that monitor
+    Vector2 dpi = GetWindowScaleDPI(); // e.g. (1.25, 1.25) for 125% scaling
+
+    cout<<"Monitor: "<<mon<<" mw:"<<mw<<" mh:"<<mh<<" DPI:"<<dpi.x<<" "<<dpi.y<<endl;
+        
 
     SetTargetFPS(60);
     Sticky notepad;

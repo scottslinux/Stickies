@@ -49,7 +49,7 @@ class InputBox{
                 { 37, 157, 249,255}    //blue
         };
         Color notecolor={ 0,255,255,255};
-        float colorindex=0;
+        float colorindex=0;  
 
     public:
 
